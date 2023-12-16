@@ -20,6 +20,8 @@ int main(){
         prop{Vector2{1200.f,600.f},LoadTexture("nature_tileset/Rock.png")},
         prop{Vector2{2000.f,1200.f},LoadTexture("nature_tileset/Log.png")}
     };
+
+    enemy goblin{Vector2{},LoadTexture("characters/goblin_idle_spritesheet.png"),LoadTexture("characters/goblin_run_spritesheet.png")};
     
     SetTargetFPS(60);
     while(!WindowShouldClose()){
@@ -51,6 +53,8 @@ int main(){
                 knight.undo();
             }
         }
+
+        goblin.tick(GetFrameTime());
 
         EndDrawing();
     }

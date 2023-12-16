@@ -1,7 +1,7 @@
 #include "character.h"
 
 character::character(int winwidth, int winheight){
-    width = texture.width/(float)maxframes;
+    width = texture.width/static_cast<float>(maxframes);
     height = texture.height;
 
     pos = {static_cast<float>(winwidth)/2.0f - scale*0.5f*width,
