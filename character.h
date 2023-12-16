@@ -1,5 +1,7 @@
 #include "raylib.h"
 #include "raymath.h"
+
+
 class character{
     Texture2D texture{LoadTexture("characters/knight_idle_spritesheet.png")};
     Texture2D idle{LoadTexture("characters/knight_idle_spritesheet.png")};

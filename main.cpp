@@ -1,6 +1,6 @@
 #include "character.h"
 #include "prop.h"
-
+#include "enemy.h"
 
 const int width=768, height=768;
 
