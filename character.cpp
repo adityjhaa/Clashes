@@ -50,3 +50,11 @@ void character::tick(float dt){
 void character::undo(){
     worldpos=lastframe;
 }
+
+Rectangle character::getcollisionrec(){
+    int padding{30};
+    return Rectangle{
+        pos.x+padding,pos.y+padding,
+        scale*width - 2*padding,scale*height - 2*padding
+    };
+}

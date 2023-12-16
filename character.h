@@ -29,5 +29,7 @@ public:
     
     void tick(float dt);
 
+    Rectangle getcollisionrec();
+
     void undo();
 };
