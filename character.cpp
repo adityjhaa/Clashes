@@ -8,7 +8,7 @@ character::character(int winwidth, int winheight){
             static_cast<float>(winheight)/2.0f - scale*0.5f*height};
 }
 
-Vector2 character::getworldpos(){return worldpos;}
+
 
 
 void character::tick(float dt){
@@ -47,14 +47,3 @@ void character::tick(float dt){
 
 }
 
-void character::undo(){
-    worldpos=lastframe;
-}
-
-Rectangle character::getcollisionrec(){
-    int padding{30};
-    return Rectangle{
-        pos.x+padding,pos.y+padding,
-        scale*width - 2*padding,scale*height - 2*padding
-    };
-}
