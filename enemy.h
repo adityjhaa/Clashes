@@ -1,7 +1,6 @@
-#include "raylib.h"
-#include "raymath.h"
+#include "basecharacter.h"
 
-class enemy{
+class enemy : public basecharacter{
     Vector2 worldpos{};
     Texture2D texture{};
     Texture2D idle{};
