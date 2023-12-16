@@ -1,6 +1,7 @@
 #include "raylib.h"
+#include "raymath.h"
 
-const int width=1080, height=1080;
+const int width=768, height=768;
 
 int main(){
 
@@ -16,7 +17,8 @@ int main(){
         ClearBackground(WHITE);
 
         Vector2 mappos{0.0,0.0};
-        DrawTextureEx(map,mappos,0.0,4.0,WHITE);
+        DrawTextureEx(map,mappos,0.0,8.0,WHITE);
+        
 
         EndDrawing();
     }
