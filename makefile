@@ -30,7 +30,7 @@ RAYLIB_API_VERSION ?= 300
 RAYLIB_PATH        ?= ..\..
 
 # Define compiler path on Windows
-COMPILER_PATH      ?= C:/raylib/mingw/bin
+COMPILER_PATH      ?= C:/raylib/w64devkit/bin
 
 # Define default options
 # One of PLATFORM_DESKTOP, PLATFORM_RPI, PLATFORM_ANDROID, PLATFORM_WEB
@@ -252,6 +252,9 @@ endif
 # Define include paths for required headers
 # NOTE: Several external required libraries (stb and others)
 INCLUDE_PATHS = -I. -I$(RAYLIB_PATH)/src -I$(RAYLIB_PATH)/src/external
+ifneq ($(wildcard /opt/homebrew/include/.*),)
+    INCLUDE_PATHS += -I/opt/homebrew/include
+endif
 
 # Define additional directories containing required header files
 ifeq ($(PLATFORM),PLATFORM_RPI)
@@ -273,7 +276,17 @@ ifeq ($(PLATFORM),PLATFORM_DESKTOP)
 endif
 
 # Define library paths containing required libs.
-LDFLAGS = -L. -L$(RAYLIB_RELEASE_PATH) -L$(RAYLIB_PATH)/src
+LDFLAGS = -L.
+
+ifneq ($(wildcard $(RAYLIB_RELEASE_PATH)/.*),)
+    LDFLAGS += -L$(RAYLIB_RELEASE_PATH)
+endif
+ifneq ($(wildcard $(RAYLIB_PATH)/src/.*),)
+    LDFLAGS += -L$(RAYLIB_PATH)/src
+endif
+ifneq ($(wildcard /opt/homebrew/lib/.*),)
+    LDFLAGS += -L/opt/homebrew/lib
+endif
 
 ifeq ($(PLATFORM),PLATFORM_DESKTOP)
     ifeq ($(PLATFORM_OS),BSD)
@@ -323,7 +336,7 @@ ifeq ($(PLATFORM),PLATFORM_DESKTOP)
     ifeq ($(PLATFORM_OS),OSX)
         # Libraries for OSX 10.9 desktop compiling
         # NOTE: Required packages: libopenal-dev libegl1-mesa-dev
-        LDLIBS = -lraylib -framework OpenGL -framework OpenAL -framework Cocoa
+        LDLIBS = -lraylib -framework OpenGL -framework OpenAL -framework Cocoa -framework IOKit
     endif
     ifeq ($(PLATFORM_OS),BSD)
         # Libraries for FreeBSD, OpenBSD, NetBSD, DragonFly desktop compiling
