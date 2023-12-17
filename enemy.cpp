@@ -17,6 +17,7 @@ void enemy::tick(float dt){
     if(!getalive()){return;}
 
     velocity = Vector2Subtract(target->getscreenpos(),getscreenpos());
+    if(Vector2Length(velocity) < radius){velocity={};}
     basecharacter::tick(dt);
 
     if(CheckCollisionRecs(target->getcollisionrec(),getcollisionrec())){
