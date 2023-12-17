@@ -6,7 +6,7 @@
 class enemy : public basecharacter{
 
     character* target;
-    float damagepersec {10.f};
+    float damagepersec {20.f};
     float radius{60.f};
 
 public:

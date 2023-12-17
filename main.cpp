@@ -28,17 +28,27 @@ int main(){
     enemy goblin1{Vector2{1700.f,1800.f},
         LoadTexture("characters/goblin_idle_spritesheet.png"),
         LoadTexture("characters/goblin_run_spritesheet.png")};
-    goblin1.settarget(&knight);
 
     enemy slime1{Vector2{1200.f,3000.f},
         LoadTexture("characters/slime_idle_spritesheet.png"),
         LoadTexture("characters/slime_run_spritesheet.png")};
-    slime1.settarget(&knight);
+
+    enemy goblin2{Vector2{5700.f,900.f},
+        LoadTexture("characters/goblin_idle_spritesheet.png"),
+        LoadTexture("characters/goblin_run_spritesheet.png")};
+
+    enemy slime2{Vector2{4200.f,5000.f},
+        LoadTexture("characters/slime_idle_spritesheet.png"),
+        LoadTexture("characters/slime_run_spritesheet.png")};
 
 
     enemy * enemies[]={
-        &goblin1,&slime1
+        &goblin1,&slime1,&goblin2,&slime2
     };
+
+    for(auto enemy : enemies){
+        enemy->settarget(&knight);
+    }
 
     bool startplay{false};
     while(!startplay){
