@@ -16,22 +16,37 @@ int main(){
     character knight{width,height};
 
 
-    prop props[2]{
-        prop{Vector2{1200.f,600.f},LoadTexture("nature_tileset/Rock.png")},
-        prop{Vector2{2000.f,1200.f},LoadTexture("nature_tileset/Log.png")}
+    prop props[]{
+        prop{Vector2{1200.f,600.f},LoadTexture("nature_tileset/Rock.png"),{}},
+        prop{Vector2{2000.f,1200.f},LoadTexture("nature_tileset/Log.png"),{}},
+        prop{Vector2{4900.f,4600.f},LoadTexture("nature_tileset/Bush.png"),{25.f}},
+        prop{Vector2{1000.f,5100.f},LoadTexture("nature_tileset/Rock.png"),{}},
+        prop{Vector2{4800.f,1600.f},LoadTexture("nature_tileset/Log.png"),{}},
+        prop{Vector2{2500.f,3400.f},LoadTexture("nature_tileset/Bush.png"),{25.f}},
     };
 
-    enemy goblin{Vector2{1700.f,1800.f},
+    enemy goblin1{Vector2{1700.f,1800.f},
         LoadTexture("characters/goblin_idle_spritesheet.png"),
         LoadTexture("characters/goblin_run_spritesheet.png")};
-    goblin.settarget(&knight);
+    goblin1.settarget(&knight);
+
+    enemy slime1{Vector2{1200.f,3000.f},
+        LoadTexture("characters/slime_idle_spritesheet.png"),
+        LoadTexture("characters/slime_run_spritesheet.png")};
+    slime1.settarget(&knight);
+
+
+    enemy * enemies[]={
+        &goblin1,&slime1
+    };
 
     bool startplay{false};
-
     while(!startplay){
         BeginDrawing();
         ClearBackground(BLACK);
-        DrawText("WELCOME!",200,200,80,GREEN);
+        DrawText("CLASSIC",215,200,80,GREEN);
+        DrawText("CLASH",255,280,80,GREEN);
+        
         DrawText("<SPACE> to PLAY",220,600,40,RED);
         if(IsKeyPressed(KEY_SPACE)){startplay=true;}
         EndDrawing();
@@ -75,17 +90,28 @@ int main(){
                 }
             }
 
-            goblin.tick(GetFrameTime());
-
-            if(IsKeyPressed(KEY_SPACE)){
-                if(CheckCollisionRecs(goblin.getcollisionrec(),knight.getweaponcollisionrec())){
-                    goblin.setalive(false);
+            for(auto enemy: enemies){
+                enemy->tick(GetFrameTime());
+            
+                if(IsKeyPressed(KEY_SPACE)){
+                    if(CheckCollisionRecs(enemy->getcollisionrec(),knight.getweaponcollisionrec())){
+                        enemy->setalive(false);
+                    }
                 }
+            }
+
+            bool win{true};
+            for(auto enemy: enemies){
+                win = win and !enemy->getalive();
+            }
+
+            if(win){
+                DrawText("YOU WIN!",200,150,80,BLACK);
             }
         }else{
             BeginDrawing();
             ClearBackground(BLACK);
-            DrawText("GAME OVER!",180,350,80,RED);
+            DrawText("GAME OVER!",150,350,80,RED);
         }
 
         EndDrawing();
