@@ -7,22 +7,28 @@ enemy::enemy(Vector2 position, Texture2D idle_tex, Texture2D run_tex){
     run=run_tex;
     width = texture.width/static_cast<float>(maxframes);
     height = texture.height;
+    speed = 7.f;
 }
 
 
  
 void enemy::tick(float dt){
-    lastframe=worldpos;
 
-    runningtime += dt;
-    if(runningtime>=updatetime){
-        runningtime=0.f;
-        frame++;
-        frame = frame%maxframes;
+    if(!getalive()){return;}
+
+    velocity = Vector2Subtract(target->getscreenpos(),getscreenpos());
+    basecharacter::tick(dt);
+
+    if(CheckCollisionRecs(target->getcollisionrec(),getcollisionrec())){
+        target->takedamage(damagepersec*dt);
     }
 
-    
-    Rectangle source{frame * width,0.f,right_left*width, height};
-    Rectangle dest{pos.x,pos.y,scale*width, scale*height};
-    DrawTexturePro(texture,source,dest,Vector2{},0.0,WHITE);
+}
+
+Vector2 enemy::getscreenpos(){
+    return {Vector2Subtract(worldpos,target->getworldpos())};
+}
+
+void enemy::settarget(character* targ){
+    target=targ;
 }

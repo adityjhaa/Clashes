@@ -1,49 +1,75 @@
 #include "character.h"
 
-character::character(int winwidth, int winheight){
+character::character(int winwidth, int winheight):
+winwidth(winwidth), winheight(winheight)
+{
     width = texture.width/static_cast<float>(maxframes);
     height = texture.height;
 
-    pos = {static_cast<float>(winwidth)/2.0f - scale*0.5f*width,
-            static_cast<float>(winheight)/2.0f - scale*0.5f*height};
+    
+    
+    speed = 10.f;
 }
 
-
+Vector2 character::getscreenpos(){
+    return Vector2{
+        static_cast<float>(winwidth)/2.0f - scale*0.5f*width,
+        static_cast<float>(winheight)/2.0f - scale*0.5f*height
+    };
+}
 
 
 void character::tick(float dt){
 
-    lastframe = worldpos;
+    if(!getalive()){return;}
 
-    Vector2 direction{};
-    if(IsKeyDown(KEY_A) or IsKeyDown(KEY_LEFT)){direction.x -= 1.0;}
-    if(IsKeyDown(KEY_D) or IsKeyDown(KEY_RIGHT)){direction.x += 1.0;}
-    if(IsKeyDown(KEY_W) or IsKeyDown(KEY_UP)){direction.y -= 1.0;}
-    if(IsKeyDown(KEY_S) or IsKeyDown(KEY_DOWN)){direction.y += 1.0;}
-    
-    if(Vector2Length(direction)!=0.0){
-        
-        worldpos = Vector2Add(worldpos,Vector2Scale(Vector2Normalize(direction),speed));
-        
-        direction.x < 0.f ? right_left=-1.f : right_left=1.f;
+    if(IsKeyDown(KEY_A) or IsKeyDown(KEY_LEFT)){velocity.x -= 1.0;}
+    if(IsKeyDown(KEY_D) or IsKeyDown(KEY_RIGHT)){velocity.x += 1.0;}
+    if(IsKeyDown(KEY_W) or IsKeyDown(KEY_UP)){velocity.y -= 1.0;}
+    if(IsKeyDown(KEY_S) or IsKeyDown(KEY_DOWN)){velocity.y += 1.0;}
 
-        texture = run;
+    basecharacter::tick(dt);
+
+    float rotation{};
+
+    Vector2 origin{};
+    Vector2 offset{};
+    if(right_left>0.f){
+        origin = {0.f,weapon.height*scale};
+        offset = {80.f,110.f};
+        weaponcollisionrec={
+            getscreenpos().x+offset.x,
+            getscreenpos().y+offset.y-weapon.height*scale,
+            weapon.width*scale,
+            weapon.height*scale
+        };
+
+        rotation = IsKeyDown(KEY_SPACE) ? 30.f : 0.f;
+
     }else{
-        texture = idle;
+        origin = {weapon.width*scale,weapon.height*scale};
+        offset = {48.f,110.f};
+        weaponcollisionrec={
+            getscreenpos().x+offset.x-weapon.width*scale,
+            getscreenpos().y+offset.y-weapon.height*scale,
+            weapon.width*scale,
+            weapon.height*scale
+        };
+
+        rotation = IsKeyDown(KEY_SPACE) ? -30.f : 0.f;
     }
 
-    runningtime += dt;
-    if(runningtime>=updatetime){
-        runningtime=0.f;
-        frame++;
-        frame = frame%maxframes;
-    }
+    Rectangle source{0.f,0.f,static_cast<float>(weapon.width)*right_left,static_cast<float>(weapon.height)};
+    Rectangle dist{getscreenpos().x + offset.x,getscreenpos().y + offset.y ,weapon.width*scale, weapon.height*scale};
+    DrawTexturePro(weapon,source,dist,origin,rotation, WHITE);
 
-    
-    Rectangle source{frame * width,0.f,right_left*width, height};
-    Rectangle dest{pos.x,pos.y,scale*width, scale*height};
-    DrawTexturePro(texture,source,dest,Vector2{},0.0,WHITE);
-
-
+ 
 }
 
+
+void character::takedamage(float damage){
+    health-=damage;
+    if(health<=0.f){
+        setalive(false);
+    }
+}

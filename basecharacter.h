@@ -5,17 +5,18 @@
 
 class basecharacter{
 
+    bool alive{true};
 
 protected:
     Texture2D texture{LoadTexture("characters/knight_idle_spritesheet.png")};
     Texture2D idle{LoadTexture("characters/knight_idle_spritesheet.png")};
     Texture2D run{LoadTexture("characters/knight_run_spritesheet.png")};
-    Vector2 pos{};
+
     Vector2 worldpos{};
 
     Vector2 lastframe{};
 
-    float right_left{1.f};     // right - 1.0, left - -1.0
+    float right_left{1.f};     // right : 1.0, left : -1.0
 
     float runningtime{};
     int frame{};
@@ -29,6 +30,8 @@ protected:
 
     float scale{8.f};
 
+    Vector2 velocity{};
+
 public:
 
     basecharacter();
@@ -38,5 +41,12 @@ public:
     Rectangle getcollisionrec();
 
     void undo();
+
+    virtual void tick(float dt);
+
+    virtual Vector2 getscreenpos() = 0;
+
+    bool getalive(){return alive;}
+    void setalive(bool a){alive = a;}
 
 };
