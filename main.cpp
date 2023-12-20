@@ -41,9 +41,17 @@ int main(){
         LoadTexture("characters/slime_idle_spritesheet.png"),
         LoadTexture("characters/slime_run_spritesheet.png")};
 
+    enemy goblin3{Vector2{700.f,4900.f},
+        LoadTexture("characters/goblin_idle_spritesheet.png"),
+        LoadTexture("characters/goblin_run_spritesheet.png")};
+
+    enemy slime3{Vector2{3200.f,4000.f},
+        LoadTexture("characters/slime_idle_spritesheet.png"),
+        LoadTexture("characters/slime_run_spritesheet.png")};
+
 
     enemy * enemies[]={
-        &goblin1,&slime1,&goblin2,&slime2
+        &goblin1,&slime1,&goblin2,&slime2,&goblin3,&slime3
     };
 
     for(auto enemy : enemies){
