@@ -1,4 +1,4 @@
-#include "prop.h"
+#include "../include/prop.h"
 
 prop::prop(Vector2 pos, Texture2D tex, float padding): worldpos(pos),texture(tex),padding(padding){
     /////

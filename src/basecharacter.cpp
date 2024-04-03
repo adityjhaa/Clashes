@@ -1,4 +1,4 @@
-#include "basecharacter.h"
+#include "../include/basecharacter.h"
 
 basecharacter::basecharacter(){
 

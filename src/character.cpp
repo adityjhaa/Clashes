@@ -1,4 +1,4 @@
-#include "character.h"
+#include "../include/character.h"
 
 character::character(int winwidth, int winheight):
 winwidth(winwidth), winheight(winheight)

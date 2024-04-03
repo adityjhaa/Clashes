@@ -1,4 +1,4 @@
-#include "enemy.h"
+#include "../include/enemy.h"
 
 enemy::enemy(Vector2 position, Texture2D idle_tex, Texture2D run_tex){
 
